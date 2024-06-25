@@ -7,7 +7,7 @@ import MyTextField from '../forms/MyTextField';
 import AxiosInstance from '../Axios';
 import Dayjs from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
-import useBlockNavigation from '../../hooks/useBlockNavigation'; // Importa useBlockNavigation aquí
+import useBlockNavigation from '../../hooks/useBlockNavigation';
 
 const EditarUsuario = () => {
   const navigate = useNavigate();
@@ -26,7 +26,6 @@ const EditarUsuario = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
-  // Utiliza useBlockNavigation para bloquear la navegación
   useBlockNavigation(true, '¿Estás seguro de cancelar la edición del usuario?');
 
   useEffect(() => {
@@ -50,15 +49,6 @@ const EditarUsuario = () => {
 
   const submission = async (data) => {
     const formattedDate = Dayjs(data.fecha["$d"]).format("YYYY-MM-DD");
-    console.log('Submitting data:', {
-      nombre: data.nombre,
-      email: data.email,
-      direccion: data.direccion,
-      telefono: data.telefono,
-      password: data.password,
-      fecha: formattedDate,
-    });
-
     try {
       const response = await AxiosInstance.put(`usuario/${id}/`, {
         nombre: data.nombre,
@@ -69,7 +59,7 @@ const EditarUsuario = () => {
         fecha: formattedDate,
       });
       console.log('Response:', response);
-      navigate('/usuario');
+      navigate('/usuario', { state: { message: `El usuario ${data.nombre} se actualizó correctamente.` } });
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : 'An error occurred');
       setError('Error al actualizar el usuario. Verifique los datos e intente nuevamente.');
@@ -89,13 +79,23 @@ const EditarUsuario = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(submission)}>
-        <Box sx={{ display: 'flex', width: '100%', backgroundColor: '#00003f', marginBottom: '10px' }}>
-          <Typography sx={{ marginLeft: '20px', color: '#fff' }}>
-            Editar Usuario
+      <Box sx={{
+          backgroundImage: 'linear-gradient(to right, rgba(88, 112, 153, 1), rgba(88, 112, 153, 0.7))',
+          color: '#fff',
+          padding: '12px 16px',
+          marginBottom: '16px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          borderRadius: '8px',
+        }}>
+          <Typography variant="h5">
+              Editar Usuario
           </Typography>
-        </Box>
+      </Box>
 
+      <form onSubmit={handleSubmit(submission)}>
         <Box sx={{ display: 'flex', width: '100%', boxShadow: 3, padding: 4, flexDirection: 'column' }}>
           {error && <Alert severity="error">{error}</Alert>}
           <Box sx={{ display: 'flex', justifyContent: 'space-around', marginBottom: '40px' }}>
@@ -176,12 +176,12 @@ const EditarUsuario = () => {
           </Box>
           <Box display="flex" justifyContent="flex-end" width="100%">
             <Box width="16%" sx={{ marginRight: 2 }}>
-              <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%' }}>
+              <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%', backgroundColor: '#D15454' }}>
                 Cancelar
               </Button>
             </Box>
             <Box width="16%">
-              <Button variant="contained" type="submit" sx={{ width: '100%' }}>
+              <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#587099', '&:hover': { backgroundColor: '#638CD3' } }}>
                 Guardar Cambios
               </Button>
             </Box>

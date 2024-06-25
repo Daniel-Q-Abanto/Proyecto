@@ -87,7 +87,7 @@ const EditarDetallePedido = () => {
                 fecha: data.fecha,
             });
             console.log('Response:', response);
-            navigate('/detalle-pedido');
+            navigate('/detalle-pedido', { state: { message: `El detalle del pedido para el producto ${data.producto} se actualizó correctamente.` } });
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : 'An error occurred');
             setError('Error al editar el detalle del pedido. Verifique los datos e intente nuevamente.');
@@ -108,7 +108,7 @@ const EditarDetallePedido = () => {
     return (
         <div>
             <Box sx={{
-                backgroundImage: 'linear-gradient(to right, rgba(35, 186, 189, 0.8), rgba(90, 202, 170, 0.35))',
+                backgroundImage: 'linear-gradient(to right, rgba(88, 112, 153, 1), rgba(88, 112, 153, 0.7))',
                 color: '#fff',
                 padding: '12px 16px',
                 marginBottom: '16px',
@@ -170,13 +170,13 @@ const EditarDetallePedido = () => {
                     </Box>
                     <Box display="flex" justifyContent="flex-end" width="100%">
                         <Box width="16%" sx={{ marginRight: 2 }}>
-                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%' }}>
+                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%', backgroundColor: '#D15454' }}>
                                 Cancelar
                             </Button>
                         </Box>
                         <Box width="16%">
-                            <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#0073e6', '&:hover': { backgroundColor: '#005bb5' } }}>
-                                Enviar
+                            <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#587099', '&:hover': { backgroundColor: '#638CD3' } }}>
+                                Guardar Cambios
                             </Button>
                         </Box>
                     </Box>

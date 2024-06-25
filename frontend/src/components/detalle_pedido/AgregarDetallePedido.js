@@ -5,9 +5,8 @@ import MyDatePickerField from '../forms/MyDatePickerField';
 import MySelectField from '../forms/MySelectField';
 import { useForm } from 'react-hook-form';
 import AxiosInstance from '../Axios';
-import Dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import useBlockNavigation from '../../hooks/useBlockNavigation'; // Importa useBlockNavigation aquí
+import useBlockNavigation from '../../hooks/useBlockNavigation';
 
 const AgregarDetallePedido = () => {
     const navigate = useNavigate();
@@ -16,7 +15,7 @@ const AgregarDetallePedido = () => {
         producto: '',
         cantidad: '',
         precio: '',
-        fecha: '', // Deja la fecha vacía inicialmente
+        fecha: '',
     };
 
     const { handleSubmit, control, setValue } = useForm({ defaultValues });
@@ -50,7 +49,7 @@ const AgregarDetallePedido = () => {
         const selectedPedido = pedidos.find(pedido => pedido.id === selectedPedidoId);
         if (selectedPedido) {
             setValue('pedido', selectedPedido.id);
-            setValue('fecha', selectedPedido.fecha); // Configura la fecha con la fecha del pedido seleccionado
+            setValue('fecha', selectedPedido.fecha);
         }
     };
 
@@ -70,10 +69,10 @@ const AgregarDetallePedido = () => {
                 producto: data.producto,
                 cantidad: data.cantidad,
                 precio: data.precio,
-                fecha: data.fecha, // Envía la fecha directamente como string
+                fecha: data.fecha,
             });
             console.log('Response:', response);
-            navigate('/detalle-pedido');
+            navigate('/detalle-pedido', { state: { message: `El detalle del pedido para el producto ${data.producto} se creó correctamente.` } });
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : 'An error occurred');
             setError('Error al crear el detalle del pedido. Verifique los datos e intente nuevamente.');
@@ -94,7 +93,7 @@ const AgregarDetallePedido = () => {
     return (
         <div>
             <Box sx={{
-                backgroundImage: 'linear-gradient(to right, rgba(35, 186, 189, 0.8), rgba(90, 202, 170, 0.35))', // Degradado verde medio claro con transparencia
+                backgroundImage: 'linear-gradient(to right, rgba(114, 121, 203, 1), rgba(134, 137, 172, 0.8))',
                 color: '#fff',
                 padding: '12px 16px',
                 marginBottom: '16px',
@@ -156,12 +155,12 @@ const AgregarDetallePedido = () => {
                     </Box>
                     <Box display="flex" justifyContent="flex-end" width="100%">
                         <Box width="16%" sx={{ marginRight: 2 }}>
-                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%' }}>
+                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%', backgroundColor: '#D15454' }}>
                                 Cancelar
                             </Button>
                         </Box>
                         <Box width="16%">
-                            <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#0073e6', '&:hover': { backgroundColor: '#005bb5' } }}>
+                            <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#7279CB', '&:hover': { backgroundColor: '#6572F2' } }}>
                                 Enviar
                             </Button>
                         </Box>

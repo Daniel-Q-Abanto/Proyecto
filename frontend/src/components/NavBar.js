@@ -10,6 +10,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import FaceIcon from '@mui/icons-material/Face';
 import { useLocation, useNavigate, Link as RouterLink } from 'react-router-dom';
+import { grey } from '@mui/material/colors';
 import axios from 'axios';
 import profileImage from '../images/profile.jpg';
 
@@ -53,7 +54,7 @@ const NavBar = ({ drawerWidth, children }) => {
           <ListItem disablePadding>
             <ListItemButton component={RouterLink} to="/home" selected={"/home" === path}>
               <ListItemIcon>
-                <HomeIcon fontSize="large" color="primary" />
+                <HomeIcon fontSize="large" sx={{ color: grey[900] }}  />
               </ListItemIcon>
               <ListItemText primary={"Home"} />
             </ListItemButton>
@@ -129,7 +130,7 @@ const NavBar = ({ drawerWidth, children }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundImage: 'linear-gradient(to right, rgba(47, 49, 72, 9.1), rgba(61, 120, 128, 0.8))' }}>
         <Toolbar>
           <IconButton 
             color="inherit"

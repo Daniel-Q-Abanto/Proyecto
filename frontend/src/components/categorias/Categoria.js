@@ -1,16 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AxiosInstance from '../Axios';
 import { MaterialReactTable } from 'material-react-table';
 import Dayjs from 'dayjs';
-import { Box, IconButton, Button, Typography } from '@mui/material'; // Importar Typography
+import { Box, IconButton, Button, Typography, Alert } from '@mui/material'; 
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { blue } from '@mui/material/colors';
+
 
 const Categoria = () => {
     const [myData, setMydata] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
 
     const GetData = () => {
         AxiosInstance.get('categoria/').then((res) => {
@@ -22,7 +26,11 @@ const Categoria = () => {
 
     useEffect(() => {
         GetData();
-    }, []);
+        if (location.state && location.state.message) {
+            setMessage(location.state.message);
+            setTimeout(() => setMessage(''), 5000);
+        }
+    }, [location.state]);
 
     const columns = useMemo(
         () => [
@@ -47,8 +55,9 @@ const Categoria = () => {
 
     return (
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
+            {message && <Alert severity="success" sx={{ marginBottom: 2 }}>{message}</Alert>}
             <Box sx={{
-                backgroundImage: 'linear-gradient(to right, rgba(88, 36, 110, 0.84), rgba(142, 68, 173, 0.68))', // Degradado con los colores especificados
+                backgroundImage: 'linear-gradient(to right, rgba(63, 85, 118, 1), rgba(63, 85, 118, 0.6))', 
                 color: '#fff',
                 padding: '12px 16px',
                 marginBottom: '16px',
@@ -61,7 +70,7 @@ const Categoria = () => {
                 <Typography variant="h5">
                     Categorías
                 </Typography>
-                <Button variant="contained" onClick={() => navigate('/agregar-categoria')}>
+                <Button variant="contained" sx={{ backgroundImage: 'linear-gradient(to right, rgba(16, 17, 22, 0.8), rgba(16, 17, 22, 0.6))' }} onClick={() => navigate('/agregar-categoria')}>
                     Agregar Categoría
                 </Button>
             </Box>
@@ -73,16 +82,16 @@ const Categoria = () => {
                     data={myData}
                     enableRowActions
                     renderRowActions={({ row, table }) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-                            <IconButton color="secondary" component={Link} to={`/editar-categoria/${row.original.id}`}>
+                        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px'}}>
+                            <IconButton sx={{color: blue[900] }} component={Link} to={`/editar-categoria/${row.original.id}`}>
                                 <EditIcon />
                             </IconButton>
-                            <IconButton color="error">
+                            <IconButton color="error" component={Link} to={`/eliminar-categoria/${row.original.id}`}>
                                 <DeleteIcon />
                             </IconButton>
                         </Box>
                     )}
-                
+
                 />
             )}
         </Box>

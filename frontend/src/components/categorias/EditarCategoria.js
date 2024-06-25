@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import AxiosInstance from '../Axios';
 import Dayjs from 'dayjs';
 import { useNavigate, useParams } from 'react-router-dom';
-import useBlockNavigation from '../../hooks/useBlockNavigation'; // Importa useBlockNavigation aquí
+import useBlockNavigation from '../../hooks/useBlockNavigation'; 
 
 const EditarCategoria = () => {
     const navigate = useNavigate();
@@ -22,7 +22,6 @@ const EditarCategoria = () => {
     const [error, setError] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
 
-    // Utiliza useBlockNavigation para bloquear la navegación
     useBlockNavigation(true, '¿Estás seguro de cancelar la edición de la categoría?');
 
     useEffect(() => {
@@ -61,7 +60,7 @@ const EditarCategoria = () => {
                 fecha: formattedDate,
             });
             console.log('Response:', response);
-            navigate('/categoria');
+            navigate('/categoria', { state: { message: `La categoría ${data.nombre} se actualizó correctamente.` } });
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : 'An error occurred');
             setError('Error al actualizar la categoría. Verifique los datos e intente nuevamente.');
@@ -70,13 +69,22 @@ const EditarCategoria = () => {
 
     return (
         <div>
+            <Box sx={{
+                backgroundImage: 'linear-gradient(to right, rgba(88, 112, 153, 1), rgba(88, 112, 153, 0.7))', 
+                color: '#fff',
+                padding: '12px 16px',
+                marginBottom: '16px',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '8px',
+            }}>
+                <Typography variant="h5">
+                    Editar Categoría
+                </Typography>
+            </Box>
             <form onSubmit={handleSubmit(submission)}>
-                <Box sx={{ display: 'flex', width: '100%', backgroundColor: '#00003f', marginBottom: '10px' }}>
-                    <Typography sx={{ marginLeft: '20px', color: '#fff' }}>
-                        Editar Categoría
-                    </Typography>
-                </Box>
-
                 <Box sx={{ display: 'flex', width: '100%', boxShadow: 3, padding: 4, flexDirection: 'column' }}>
                     {error && <Alert severity="error">{error}</Alert>}
                     <Box sx={{ display: 'flex', justifyContent: 'space-around', marginBottom: '40px' }}>
@@ -111,12 +119,12 @@ const EditarCategoria = () => {
                     
                     <Box display="flex" justifyContent="flex-end" width="100%">
                         <Box width="16%" sx={{ marginRight: 2 }}>
-                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%' }}>
+                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%', backgroundColor: '#D15454' }}>
                                 Cancelar
                             </Button>
                         </Box>
                         <Box width="16%">
-                            <Button variant="contained" type="submit" sx={{ width: '100%' }}>
+                            <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#587099', '&:hover': { backgroundColor: '#638CD3' } }}>
                                 Guardar Cambios
                             </Button>
                         </Box>
@@ -139,7 +147,7 @@ const EditarCategoria = () => {
                     <Button onClick={() => handleDialogClose(false)} color="primary">
                         No
                     </Button>
-                    <Button onClick={() => handleDialogClose(true)} color="primary" autoFocus>
+                    <Button onClick={() => handleDialogClose(true)}  color="primary" autoFocus>
                         Sí
                     </Button>
                 </DialogActions>

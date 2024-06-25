@@ -25,6 +25,12 @@ import EditarPedido from './components/pedidos/EditarPedido';
 import DetallePedido from './components/detalle_pedido/DetallePedido';
 import AgregarDetallePedido from './components/detalle_pedido/AgregarDetallePedido';
 import EditarDetallePedido from './components/detalle_pedido/EditarDetallePedido';
+import EliminarUsuario from './components/usuarios/EliminarUsuario';
+import EliminarDetallePedido from './components/detalle_pedido/EliminarDetallePedido';
+import EliminarPedido from './components/pedidos/EliminarPedido';
+import EliminarProducto from './components/productos/EliminarProducto';
+import EliminarMarca from './components/marcas/EliminarMarca';
+import EliminarCategoria from './components/categorias/EliminarCategoria';
 
 function App() {
   const drawerWidth = 240;
@@ -48,6 +54,7 @@ function App() {
                   <Route path="producto" element={<Producto />} />
                   <Route path="pedido" element={<Pedido />} />
                   <Route path="detalle-pedido" element={<DetallePedido />} />
+                  
 
                   <Route path="agregar-usuario" element={<AgregarUsuario />} />
                   <Route path="agregar-categoria" element={<AgregarCategoria />} />
@@ -56,12 +63,21 @@ function App() {
                   <Route path="agregar-pedido" element={<AgregarPedido />} />
                   <Route path="agregar-detalle-pedido" element={<AgregarDetallePedido />} />
 
+
                   <Route path="editar-usuario/:id" element={<EditarUsuario />} />
                   <Route path="editar-categoria/:id" element={<EditarCategoria />} />
                   <Route path="editar-marca/:id" element={<EditarMarca />} />
                   <Route path="editar-producto/:id" element={<EditarProducto />} />
                   <Route path="editar-pedido/:id" element={<EditarPedido />} />
                   <Route path="editar-detalle-pedido/:id" element={<EditarDetallePedido />} />
+
+
+                  <Route path="eliminar-usuario/:id" element={<EliminarUsuario />} />
+                  <Route path="eliminar-categoria/:id" element={<EliminarCategoria />} />
+                  <Route path="eliminar-marca/:id" element={<EliminarMarca />} />
+                  <Route path="eliminar-producto/:id" element={<EliminarProducto />} />
+                  <Route path="eliminar-pedido/:id" element={<EliminarPedido />} />
+                  <Route path="eliminar-detalle-pedido/:id" element={<EliminarDetallePedido />} />
 
 
                 </Routes>

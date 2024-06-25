@@ -99,7 +99,7 @@ const EditarProducto = () => {
         },
       });
       console.log('Response:', response);
-      navigate('/producto');
+      navigate('/producto', { state: { message: `El producto ${data.nombre} se actualizó correctamente.` } });
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : 'An error occurred');
       setError('Error al actualizar el producto. Verifique los datos e intente nuevamente.');
@@ -119,13 +119,23 @@ const EditarProducto = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit(submission)}>
-        <Box sx={{ display: 'flex', width: '100%', backgroundColor: '#00003f', marginBottom: '10px' }}>
-          <Typography sx={{ marginLeft: '20px', color: '#fff' }}>
-            Editar Producto
+      <Box sx={{
+          backgroundImage: 'linear-gradient(to right, rgba(88, 112, 153, 1), rgba(88, 112, 153, 0.7))',
+          color: '#fff',
+          padding: '12px 16px',
+          marginBottom: '16px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+          borderRadius: '8px',
+        }}>
+          <Typography variant="h5">
+              Editar Producto
           </Typography>
-        </Box>
+      </Box>
 
+      <form onSubmit={handleSubmit(submission)}>
         <Box sx={{ display: 'flex', width: '100%', boxShadow: 3, padding: 4, flexDirection: 'column' }}>
           {error && <Alert severity="error">{error}</Alert>}
           <Box sx={{ display: 'flex', justifyContent: 'space-around', marginBottom: '40px' }}>
@@ -215,12 +225,12 @@ const EditarProducto = () => {
           </Box>
           <Box display="flex" justifyContent="flex-end" width="100%">
             <Box width="16%" sx={{ marginRight: 2 }}>
-              <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%' }}>
+              <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%', backgroundColor: '#D15454' }}>
                 Cancelar
               </Button>
             </Box>
             <Box width="16%">
-              <Button variant="contained" type="submit" sx={{ width: '100%' }}>
+              <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#587099', '&:hover': { backgroundColor: '#638CD3' } }}>
                 Guardar Cambios
               </Button>
             </Box>
@@ -254,4 +264,3 @@ const EditarProducto = () => {
 };
 
 export default EditarProducto;
-

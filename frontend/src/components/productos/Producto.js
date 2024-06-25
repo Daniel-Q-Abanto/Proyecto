@@ -1,16 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AxiosInstance from '../Axios';
 import { MaterialReactTable } from 'material-react-table';
 import Dayjs from 'dayjs';
-import { Box, IconButton, Button, Typography } from '@mui/material'; // Asegúrate de importar Typography
+import { Box, IconButton, Button, Typography, Alert } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { blue } from '@mui/material/colors';
 
 const Producto = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState(null);
+    const [showMessage, setShowMessage] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const GetData = async () => {
         try {
@@ -55,9 +59,15 @@ const Producto = () => {
     }, []);
 
     useEffect(() => {
-        console.log("Estado de carga:", loading);
-        console.log("Productos:", productos);
-    }, [loading, productos]);
+        if (location.state && location.state.message) {
+            setMessage(location.state.message);
+            setShowMessage(true);
+            setTimeout(() => {
+                setShowMessage(false);
+                setMessage(null);
+            }, 5000); // Ocultar mensaje después de 5 segundos
+        }
+    }, [location.state]);
 
     const columns = useMemo(
         () => [
@@ -115,7 +125,7 @@ const Producto = () => {
     return (
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
             <Box sx={{
-                backgroundImage: 'linear-gradient(to right, rgba(88, 36, 110, 0.84), rgba(142, 68, 173, 0.68))', // Degradado con los colores especificados
+                backgroundImage: 'linear-gradient(to right, rgba(63, 85, 118, 1), rgba(63, 85, 118, 0.6))',
                 color: '#fff',
                 padding: '12px 16px',
                 marginBottom: '16px',
@@ -128,10 +138,11 @@ const Producto = () => {
                 <Typography variant="h5">
                     Productos
                 </Typography>
-                <Button variant="contained" onClick={() => navigate('/agregar-producto')}>
+                <Button variant="contained" sx={{ backgroundImage: 'linear-gradient(to right, rgba(16, 17, 22, 0.8), rgba(16, 17, 22, 0.6))' }} onClick={() => navigate('/agregar-producto')}>
                     Agregar Producto
                 </Button>
             </Box>
+            {showMessage && <Alert severity="success" sx={{ marginBottom: '16px' }}><strong>{message}</strong></Alert>}
             {loading ? (
                 <p>Loading data...</p>
             ) : (
@@ -141,10 +152,10 @@ const Producto = () => {
                     enableRowActions
                     renderRowActions={({ row, table }) => (
                         <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-                            <IconButton color="secondary" component={Link} to={`/editar-producto/${row.original.id}`}>
+                            <IconButton sx={{color: blue[900] }} component={Link} to={`/editar-producto/${row.original.id}`}>
                                 <EditIcon />
                             </IconButton>
-                            <IconButton color="error">
+                            <IconButton color="error" component={Link} to={`/eliminar-producto/${row.original.id}`}>
                                 <DeleteIcon />
                             </IconButton>
                         </Box>

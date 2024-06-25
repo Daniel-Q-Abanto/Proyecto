@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Button, Typography, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
+import { Box, Button, Typography, Alert, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import MyDatePickerField from '../forms/MyDatePickerField';
 import MyTextField from '../forms/MyTextField';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import AxiosInstance from '../Axios';
 import Dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +23,7 @@ const AgregarUsuario = () => {
     const { handleSubmit, control } = useForm({ defaultValues });
     const [error, setError] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     // Utiliza useBlockNavigation para bloquear la navegación
     useBlockNavigation(true, '¿Estás seguro de cancelar la creación del usuario?');
@@ -47,7 +49,7 @@ const AgregarUsuario = () => {
                 fecha: formattedDate,
             });
             console.log('Response:', response);
-            navigate('/usuario');
+            navigate('/usuario', { state: { message: `El usuario ${data.nombre} se creó correctamente.` } });
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : 'An error occurred');
             setError('Error al crear el usuario. Verifique los datos e intente nuevamente.');
@@ -68,7 +70,7 @@ const AgregarUsuario = () => {
     return (
         <div>
             <Box sx={{
-                backgroundImage: 'linear-gradient(to right, rgba(35, 186, 189, 0.8), rgba(90, 202, 170, 0.35))', // Degradado verde medio claro con transparencia
+                backgroundImage: 'linear-gradient(to right, rgba(114, 121, 203, 1), rgba(134, 137, 172, 0.8))',
                 color: '#fff',
                 padding: '12px 16px',
                 marginBottom: '16px',
@@ -125,15 +127,33 @@ const AgregarUsuario = () => {
                             width={'25%'}
                             autoComplete="tel"
                         />
-                        <MyTextField
-                            id="password"
-                            label="Password"
+                        <Controller
                             name="password"
                             control={control}
-                            placeholder="Proporcionar la contraseña"
-                            width={'25%'}
-                            autoComplete="new-password"
-                            type="password"
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    id="password"
+                                    label="Password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Proporcionar la contraseña"
+                                    variant="outlined"
+                                    sx={{ width: '25%' }}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                    autoComplete="new-password"
+                                />
+                            )}
                         />
                         <MyDatePickerField
                             id="fecha"
@@ -146,12 +166,12 @@ const AgregarUsuario = () => {
                     </Box>
                     <Box display="flex" justifyContent="flex-end" width="100%">
                         <Box width="16%" sx={{ marginRight: 2 }}>
-                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%' }}>
+                            <Button variant="contained" color="error" onClick={handleCancel} sx={{ width: '100%', backgroundColor: '#D15454' }}>
                                 Cancelar
                             </Button>
                         </Box>
                         <Box width="16%">
-                            <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#0073e6', '&:hover': { backgroundColor: '#005bb5' } }}>
+                            <Button variant="contained" type="submit" sx={{ width: '100%', backgroundColor: '#7279CB', '&:hover': { backgroundColor: '#6572F2' } }}>
                                 Enviar
                             </Button>
                         </Box>

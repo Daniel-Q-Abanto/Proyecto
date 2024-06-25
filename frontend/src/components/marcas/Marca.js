@@ -1,21 +1,25 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AxiosInstance from '../Axios';
 import { MaterialReactTable } from 'material-react-table';
 import Dayjs from 'dayjs';
-import { Box, IconButton, Button, Typography } from '@mui/material'; // Importar Typography
+import { Box, IconButton, Button, Typography, Alert } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { blue } from '@mui/material/colors';
 
 const Marca = () => {
     const [myData, setMydata] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState(null);
+    const [showMessage, setShowMessage] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const GetData = () => {
         AxiosInstance.get('marca/').then((res) => {
             setMydata(res.data);
-            console.log(res.data);
+            
             setLoading(false);
         });
     };
@@ -24,10 +28,21 @@ const Marca = () => {
         GetData();
     }, []);
 
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            setMessage(location.state.message);
+            setShowMessage(true);
+            setTimeout(() => {
+                setShowMessage(false);
+                setMessage(null);
+            }, 5000); 
+        }
+    }, [location.state]);
+
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'nombre', 
+                accessorKey: 'nombre',
                 header: 'Nombre',
                 size: 150,
             },
@@ -48,7 +63,7 @@ const Marca = () => {
     return (
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
             <Box sx={{
-                backgroundImage: 'linear-gradient(to right, rgba(88, 36, 110, 0.84), rgba(142, 68, 173, 0.68))', // Degradado con los colores especificados
+                backgroundImage: 'linear-gradient(to right, rgba(63, 85, 118, 1), rgba(63, 85, 118, 0.6))',
                 color: '#fff',
                 padding: '12px 16px',
                 marginBottom: '16px',
@@ -61,10 +76,11 @@ const Marca = () => {
                 <Typography variant="h5">
                     Marcas
                 </Typography>
-                <Button variant="contained" onClick={() => navigate('/agregar-marca')}>
+                <Button variant="contained" sx={{ backgroundImage: 'linear-gradient(to right, rgba(16, 17, 22, 0.8), rgba(16, 17, 22, 0.6))' }} onClick={() => navigate('/agregar-marca')}>
                     Agregar Marca
                 </Button>
             </Box>
+            {showMessage && <Alert severity="success" sx={{ marginBottom: '16px' }}><strong>{message}</strong></Alert>}
             {loading ? (
                 <p>Loading data...</p>
             ) : (
@@ -74,15 +90,15 @@ const Marca = () => {
                     enableRowActions
                     renderRowActions={({ row, table }) => (
                         <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-                            <IconButton color="secondary" component={Link} to={`/editar-marca/${row.original.id}`}>
+                            <IconButton sx={{color: blue[900] }} component={Link} to={`/editar-marca/${row.original.id}`}>
                                 <EditIcon />
                             </IconButton>
-                            <IconButton color="error">
+                            <IconButton color="error" component={Link} to={`/eliminar-marca/${row.original.id}`}>
                                 <DeleteIcon />
                             </IconButton>
                         </Box>
                     )}
-                    
+
                 />
             )}
         </Box>

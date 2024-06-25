@@ -1,21 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AxiosInstance from '../Axios';
 import { MaterialReactTable } from 'material-react-table';
 import Dayjs from 'dayjs';
-import { Box, IconButton, Button, Typography } from '@mui/material'; // Importar Typography
+import { Box, IconButton, Button, Typography, Alert } from '@mui/material';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
+import { blue } from '@mui/material/colors';
 
 const Pedido = () => {
     const [myData, setMydata] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState(null);
+    const [showMessage, setShowMessage] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const GetData = () => {
         AxiosInstance.get('pedido/').then((res) => {
             setMydata(res.data);
-            console.log(res.data);
             setLoading(false);
         });
     };
@@ -24,15 +27,26 @@ const Pedido = () => {
         GetData();
     }, []);
 
+    useEffect(() => {
+        if (location.state && location.state.message) {
+            setMessage(location.state.message);
+            setShowMessage(true);
+            setTimeout(() => {
+                setShowMessage(false);
+                setMessage(null);
+            }, 5000); 
+        }
+    }, [location.state]);
+
     const columns = useMemo(
         () => [
             {
-                accessorKey: 'usuario', // Mostrar el ID del usuario
+                accessorKey: 'usuario',
                 header: 'ID Usuario',
                 size: 150,
             },
             {
-                accessorKey: 'nombre', //access nested data with dot notation
+                accessorKey: 'nombre',
                 header: 'Nombre',
                 size: 150,
             },
@@ -42,7 +56,7 @@ const Pedido = () => {
                 size: 150,
             },
             {
-                accessorKey: 'direccion', //normal accessorKey
+                accessorKey: 'direccion',
                 header: 'Dirección',
                 size: 200,
             },
@@ -68,7 +82,7 @@ const Pedido = () => {
     return (
         <Box sx={{ width: '100%', overflowX: 'auto' }}>
             <Box sx={{
-                backgroundImage: 'linear-gradient(to right, rgba(88, 36, 110, 0.84), rgba(142, 68, 173, 0.68))', // Degradado con los colores especificados
+                backgroundImage: 'linear-gradient(to right, rgba(63, 85, 118, 1), rgba(63, 85, 118, 0.6))',
                 color: '#fff',
                 padding: '12px 16px',
                 marginBottom: '16px',
@@ -81,10 +95,11 @@ const Pedido = () => {
                 <Typography variant="h5">
                     Pedidos
                 </Typography>
-                <Button variant="contained" onClick={() => navigate('/agregar-pedido')}>
+                <Button variant="contained" sx={{ backgroundImage: 'linear-gradient(to right, rgba(16, 17, 22, 0.8), rgba(16, 17, 22, 0.6))' }} onClick={() => navigate('/agregar-pedido')}>
                     Agregar Pedido
                 </Button>
             </Box>
+            {showMessage && <Alert severity="success" sx={{ marginBottom: '16px' }}><strong>{message}</strong></Alert>}
             {loading ? (
                 <p>Loading data...</p>
             ) : (
@@ -94,15 +109,15 @@ const Pedido = () => {
                     enableRowActions
                     renderRowActions={({ row, table }) => (
                         <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-                            <IconButton color="secondary" component={Link} to={`/editar-pedido/${row.original.id}`}>
+                            <IconButton sx={{color: blue[900] }} component={Link} to={`/editar-pedido/${row.original.id}`}>
                                 <EditIcon />
                             </IconButton>
-                            <IconButton color="error">
+                            <IconButton color="error" component={Link} to={`/eliminar-pedido/${row.original.id}`}>
                                 <DeleteIcon />
                             </IconButton>
                         </Box>
                     )}
-                    
+
                 />
             )}
         </Box>
