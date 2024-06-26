@@ -13,14 +13,21 @@ export default function MyDatePickerField(props) {
             <Controller
                 name={name}
                 control={control}
-                render={({ field: { onChange, value } }) => (
+                render={({ field: { onChange, value }, fieldState: { error } }) => (
                     <DatePicker
                         id={id}
                         name={name}
                         label={label}
                         value={value ? dayjs(value) : null}
                         onChange={(newValue) => onChange(newValue ? newValue.toISOString() : '')}
-                        slotProps={{ textField: { sx: { width }, autoComplete } }}
+                        slotProps={{
+                            textField: {
+                                sx: { width },
+                                autoComplete,
+                                error: !!error,
+                                helperText: error?.message,
+                            },
+                        }}
                     />
                 )}
             />

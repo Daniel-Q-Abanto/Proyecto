@@ -7,7 +7,9 @@ import { useForm } from 'react-hook-form';
 import AxiosInstance from '../Axios';
 import Dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import useBlockNavigation from '../../hooks/useBlockNavigation'; // Importa useBlockNavigation aquí
+import useBlockNavigation from '../../hooks/useBlockNavigation'; 
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const AgregarPedido = () => {
     const navigate = useNavigate();
@@ -21,7 +23,17 @@ const AgregarPedido = () => {
         fecha: '',
     };
 
-    const { handleSubmit, control, setValue } = useForm({ defaultValues });
+    const schema = yup.object({
+        usuario: yup.string().required('Usuario es requerido'),
+        nombre: yup.string().required('Nombre es requerido'),
+        dni: yup.string().required('DNI es requerido'),
+        direccion: yup.string().required('Dirección es requerida'),
+        telefono: yup.string().required('Teléfono es requerido'),
+        email: yup.string().email('Email no es válido').required('Email es requerido'),
+        fecha: yup.date().required('Fecha es requerida'),
+    });
+
+    const { handleSubmit, control, setValue } = useForm({ defaultValues, resolver: yupResolver(schema) });
     const [error, setError] = useState('');
     const [usuarios, setUsuarios] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);

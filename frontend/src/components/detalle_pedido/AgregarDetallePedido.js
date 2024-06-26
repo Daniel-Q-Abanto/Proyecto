@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 import AxiosInstance from '../Axios';
 import { useNavigate } from 'react-router-dom';
 import useBlockNavigation from '../../hooks/useBlockNavigation';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const AgregarDetallePedido = () => {
     const navigate = useNavigate();
@@ -18,7 +20,16 @@ const AgregarDetallePedido = () => {
         fecha: '',
     };
 
-    const { handleSubmit, control, setValue } = useForm({ defaultValues });
+
+    const schema = yup.object({
+        pedido: yup.string().required('Pedido es requerido'),
+        producto: yup.string().required('Producto es requerido'),
+        cantidad: yup.number().required('Cantidad es requerida').min(1, 'La cantidad debe ser al menos 1'),
+        precio: yup.number().required('Precio es requerido').min(0, 'El precio debe ser un número positivo'),
+        fecha: yup.date().required('Fecha es requerida'),
+    });
+
+    const { handleSubmit, control, setValue } = useForm({ defaultValues, resolver: yupResolver(schema) });
     const [error, setError] = useState('');
     const [pedidos, setPedidos] = useState([]);
     const [productos, setProductos] = useState([]);

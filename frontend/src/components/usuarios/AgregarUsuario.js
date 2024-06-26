@@ -7,7 +7,9 @@ import { useForm, Controller } from 'react-hook-form';
 import AxiosInstance from '../Axios';
 import Dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
-import useBlockNavigation from '../../hooks/useBlockNavigation'; // Importa useBlockNavigation aquí
+import useBlockNavigation from '../../hooks/useBlockNavigation';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const AgregarUsuario = () => {
     const navigate = useNavigate();
@@ -20,7 +22,16 @@ const AgregarUsuario = () => {
         fecha: '',
     };
 
-    const { handleSubmit, control } = useForm({ defaultValues });
+    const schema = yup.object({
+        nombre: yup.string().required('Nombre es requerido'),
+        email: yup.string().email('Email no es válido').required('Email es requerido'),
+        direccion: yup.string().required('Direccion es requerida'),
+        telefono: yup.string().required('Telefono es requerido'),
+        password: yup.string().required('Password es requerido'),
+        fecha: yup.date().required('Fecha es requerida'),
+    });
+
+    const { handleSubmit, control } = useForm({ defaultValues, resolver: yupResolver(schema) });
     const [error, setError] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +40,7 @@ const AgregarUsuario = () => {
     useBlockNavigation(true, '¿Estás seguro de cancelar la creación del usuario?');
 
     const submission = async (data) => {
-        const formattedDate = Dayjs(data.fecha["$d"]).format("YYYY-MM-DD");
+        const formattedDate = Dayjs(data.fecha).format("YYYY-MM-DD");
         console.log('Submitting data:', {
             nombre: data.nombre,
             email: data.email,

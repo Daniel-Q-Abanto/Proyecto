@@ -4,6 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Controller } from 'react-hook-form';
+import FormHelperText from '@mui/material/FormHelperText';
 
 export default function MySelectField(props) {
   const { id, label, name, control, width, autoComplete, options, onChangeExtra } = props;
@@ -19,28 +20,32 @@ export default function MySelectField(props) {
           fieldState: { error },
           formState,
         }) => (
-          <Select
-            labelId={`${id}-label`}
-            id={id}
-            name={name}
-            onChange={(e) => {
-              onChange(e);
-              if (onChangeExtra) {
-                onChangeExtra(e);
-              }
-            }}
-            value={value || ''}
-            autoComplete={autoComplete}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {options.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+          <>
+            <Select
+              labelId={`${id}-label`}
+              id={id}
+              name={name}
+              error={!!error}
+              onChange={(e) => {
+                onChange(e);
+                if (onChangeExtra) {
+                  onChangeExtra(e);
+                }
+              }}
+              value={value || ''}
+              autoComplete={autoComplete}
+            >
+              <MenuItem value="">
+                <em>None</em>
               </MenuItem>
-            ))}
-          </Select>
+              {options.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+            <FormHelperText sx={{color:"#d32f2f"}}>{error?.message}</FormHelperText>
+          </>
         )}
       />
     </FormControl>

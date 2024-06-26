@@ -27,6 +27,8 @@ export default function MyMultiLineField(props) {
           variant="standard"
           placeholder = {placeholder} 
           autoComplete={autoComplete}
+          error = {!!error}
+          helperText = {error?.message}
         />
        )
       }  

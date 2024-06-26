@@ -8,6 +8,8 @@ import AxiosInstance from '../Axios';
 import Dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import useBlockNavigation from '../../hooks/useBlockNavigation'; 
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const AgregarMarca = () => {
     const navigate = useNavigate();
@@ -17,7 +19,13 @@ const AgregarMarca = () => {
         fecha: '',
     };
 
-    const { handleSubmit, control } = useForm({ defaultValues });
+    const schema = yup.object({
+        nombre: yup.string().required('Nombre es requerido'),
+        descripcion: yup.string().required('descripción es requerido'),
+        fecha: yup.date().required('Fecha es requerida'),
+    });
+
+    const { handleSubmit, control } = useForm({ defaultValues, resolver: yupResolver(schema) });
     const [error, setError] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
 

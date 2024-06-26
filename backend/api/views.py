@@ -42,7 +42,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
 
     def list(self, request):
-        queryset = self.queryset
+        queryset = Usuario.objects.all() 
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
@@ -81,7 +81,7 @@ class CategoriaViewSet(viewsets.ModelViewSet):
     serializer_class = CategoriaSerializer
 
     def list(self, request):
-        queryset = self.queryset
+        queryset = Categoria.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
@@ -119,7 +119,7 @@ class MarcaViewSet(viewsets.ModelViewSet):
     serializer_class = MarcaSerializer
 
     def list(self, request):
-        queryset = self.queryset
+        queryset = Marca.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
@@ -157,7 +157,7 @@ class ProductoViewSet(viewsets.ModelViewSet):
     serializer_class = ProductoSerializer
 
     def list(self, request):
-        queryset = self.queryset
+        queryset = Producto.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
@@ -195,7 +195,7 @@ class PedidoViewSet(viewsets.ModelViewSet):
     serializer_class = PedidoSerializer
 
     def list(self, request):
-        queryset = self.queryset
+        queryset = Pedido.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 
@@ -237,7 +237,7 @@ class DetallePedidoViewSet(viewsets.ModelViewSet):
     serializer_class = DetallePedidoSerializer
 
     def list(self, request):
-        queryset = self.queryset
+        queryset = DetallePedido.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
 

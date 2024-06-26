@@ -9,6 +9,8 @@ import AxiosInstance from '../Axios';
 import Dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import useBlockNavigation from '../../hooks/useBlockNavigation'; // Importa useBlockNavigation aquí
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const AgregarProducto = () => {
   const navigate = useNavigate();
@@ -23,7 +25,18 @@ const AgregarProducto = () => {
     imagen: null,
   };
 
-  const { handleSubmit, control, register, setValue } = useForm({ defaultValues });
+
+  const schema = yup.object({
+    nombre: yup.string().required('Nombre es requerido'),
+    descripcion: yup.string().required('Descripción es requerida'),
+    precio: yup.number().required('Precio es requerido'),
+    stock: yup.number().required('Stock es requerido'),
+    categoria: yup.string().required('Categoría es requerida'),
+    marca: yup.string().required('Marca es requerida'),
+    fecha: yup.date().required('Fecha es requerida'),
+});
+
+  const { handleSubmit, control, register, setValue } = useForm({ defaultValues, resolver: yupResolver(schema) });
   const [categorias, setCategorias] = useState([]);
   const [marcas, setMarcas] = useState([]);
   const [imagenNombre, setImagenNombre] = useState('');
