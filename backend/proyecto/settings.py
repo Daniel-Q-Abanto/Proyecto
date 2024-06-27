@@ -46,6 +46,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000'
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 ROOT_URLCONF = 'proyecto.urls'
 
 TEMPLATES = [
@@ -73,9 +75,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ventas',
-        'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
+        'USER': 'admin',
+        'PASSWORD': 'root2024',
+        'HOST': 'database-proyecto.c9owsc428h6h.us-east-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }
