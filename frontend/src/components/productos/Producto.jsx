@@ -43,7 +43,6 @@ const Producto = () => {
                 ...producto,
                 categoriaNombre: categoriaMap[producto.categoria],
                 marcaNombre: marcaMap[producto.marca],
-                imagen: `http://127.0.0.1:8000${producto.imagen}`
             }));
 
             console.log("Productos con nombres y URLs de imagen:", productosConNombres);
@@ -160,7 +159,6 @@ const Producto = () => {
                             </IconButton>
                         </Box>
                     )}
-                    
                 />
             )}
         </Box>

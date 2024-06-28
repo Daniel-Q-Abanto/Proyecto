@@ -16,8 +16,9 @@ class MarcaSerializer(serializers.ModelSerializer):
         model = Marca
         fields = ('id', 'nombre', 'descripcion', 'fecha')
 
+
 class ProductoSerializer(serializers.ModelSerializer):
-    imagen = serializers.ImageField(required=False)
+    imagen = serializers.URLField(required=False)  # Cambiado a URLField
 
     class Meta:
         model = Producto

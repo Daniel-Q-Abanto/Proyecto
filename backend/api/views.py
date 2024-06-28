@@ -170,12 +170,12 @@ class ProductoViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=400)
 
     def retrieve(self, request, pk=None):
-        producto = self.queryset.get (pk=pk)
+        producto = self.queryset.get(pk=pk)
         serializer = self.serializer_class(producto)
         return Response(serializer.data)
 
     def update(self, request, pk=None):
-        producto = self.queryset.get (pk=pk)
+        producto = self.queryset.get(pk=pk)
         serializer = self.serializer_class(producto, data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -184,7 +184,7 @@ class ProductoViewSet(viewsets.ModelViewSet):
             return Response(serializer.errors, status=400)
 
     def destroy(self, request, pk=None):
-        producto = self.queryset.get (pk=pk)
+        producto = self.queryset.get(pk=pk)
         producto.delete()
         return Response(status=204)
     

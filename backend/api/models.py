@@ -42,9 +42,9 @@ class Producto(models.Model):
     descripcion = models.TextField(default='N/A', null=True, blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True)
-    marca = models.ForeignKey(Marca, on_delete=models.CASCADE, null=True, blank=True)
-    imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
+    categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE, null=True, blank=True)
+    marca = models.ForeignKey('Marca', on_delete=models.CASCADE, null=True, blank=True)
+    imagen = models.URLField(max_length=255, null=True, blank=True)  # Campo para URL de la imagen
     fecha = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
@@ -52,7 +52,6 @@ class Producto(models.Model):
 
     class Meta:
         db_table = 'productos'
-
 
 class Pedido(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, blank=True)
